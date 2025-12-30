@@ -12,8 +12,10 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(OpenCV REQUIRED)
 
-# Build the controller executable
+# New controller executable
 add_executable(rc_car_controller src/rc_car_controller.cpp)
 ament_target_dependencies(rc_car_controller rclcpp geometry_msgs)
 
@@ -21,10 +23,16 @@ ament_target_dependencies(rc_car_controller rclcpp geometry_msgs)
 add_executable(goto_position src/goto_position.cpp)
 ament_target_dependencies(goto_position rclcpp geometry_msgs nav_msgs tf2)
 
+# New Lidar visualizer
+add_executable(lidar_visualizer src/lidar_visualizer.cpp)
+ament_target_dependencies(lidar_visualizer rclcpp sensor_msgs nav_msgs)
+target_link_libraries(lidar_visualizer ${OpenCV_LIBS})
+
 # Install the executable
 install(TARGETS
   rc_car_controller
   goto_position
+  lidar_visualizer
   DESTINATION lib/${PROJECT_NAME}
 )
 # uncomment the following section in order to fill in
